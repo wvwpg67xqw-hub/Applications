@@ -1,5 +1,11 @@
 import express from "express";
+import session from "express-session";
 import cors from "cors";
+
+import authRoutes from "./routes/auth";
+import appRoutes from "./routes/applications";
+import adminRoutes from "./routes/admin";
+import statsRoutes from "./routes/stats";
 
 const app = express();
 
@@ -10,33 +16,22 @@ app.use(cors({
 
 app.use(express.json());
 
-// fake DB
-let applications: any[] = [];
+app.use(session({
+  secret: process.env.SESSION_SECRET!,
+  resave: false,
+  saveUninitialized: false
+}));
 
-app.get("/api/stats", (_, res) => {
-  res.json({
-    total: applications.length,
-    pending: applications.filter(a => a.status === "pending").length,
-    accepted: applications.filter(a => a.status === "accepted").length,
-    denied: applications.filter(a => a.status === "denied").length
-  });
+app.use((req: any, _, next) => {
+  req.user = req.session.user;
+  next();
 });
 
-app.post("/api/apply", (req, res) => {
-  const appData = {
-    id: Date.now(),
-    status: "pending",
-    ...req.body
-  };
-
-  applications.push(appData);
-  res.json(appData);
-});
-
-app.get("/api/applications", (_, res) => {
-  res.json(applications);
-});
+app.use("/api/auth", authRoutes);
+app.use("/api/applications", appRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/stats", statsRoutes);
 
 app.listen(3000, () => {
-  console.log("Server running on http://localhost:3000");
+  console.log("API running on http://localhost:3000");
 });
