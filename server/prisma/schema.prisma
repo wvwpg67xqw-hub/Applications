@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String @id
+  username  String
+  avatar    String?
+  role      String @default("user")
+}
+
+model Application {
+  id        Int      @id @default(autoincrement())
+  discordId String
+  username  String
+  role      String
+  age       Int
+  timezone  String
+  experience String
+  whyJoin   String
+  availability String
+  status    String @default("pending")
+  createdAt DateTime @default(now())
+}
+
+model Blacklist {
+  id        Int @id @default(autoincrement())
+  discordId String
+  username  String
+  reason    String?
+  createdAt DateTime @default(now())
+}
+
+model Admin {
+  id        Int @id @default(autoincrement())
+  discordId String
+  username  String
+  addedBy   String
+  createdAt DateTime @default(now())
+}
