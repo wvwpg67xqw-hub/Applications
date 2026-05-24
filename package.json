@@ -1,0 +1,11 @@
+{
+  "name": "staff-portal",
+  "private": true,
+  "scripts": {
+    "dev": "tsx start.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.0.0"
+  }
+}
