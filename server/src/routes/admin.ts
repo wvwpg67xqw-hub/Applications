@@ -34,14 +34,4 @@ router.post("/applications/:id/deny", async (req, res) => {
   res.json(app);
 });
 
-// blacklist
-router.post("/blacklist", async (req, res) => {
-  const entry = await prisma.blacklist.create({ data: req.body });
-  res.json(entry);
-});
-
-router.get("/blacklist", async (_, res) => {
-  res.json(await prisma.blacklist.findMany());
-});
-
 export default router;

@@ -28,14 +28,6 @@ model Application {
   createdAt DateTime @default(now())
 }
 
-model Blacklist {
-  id        Int @id @default(autoincrement())
-  discordId String
-  username  String
-  reason    String?
-  createdAt DateTime @default(now())
-}
-
 model Admin {
   id        Int @id @default(autoincrement())
   discordId String
